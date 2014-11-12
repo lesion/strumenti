@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+# PYTHON_ARGCOMPLETE_OK
+
+import argcomplete, argparse
+from argcomplete.completers import FilesCompleter
+from strumenti.lib import log
+from sys import argv
+from os import path
+from strumenti.done.lib.module import list_modules, get_run_callback
+modules = list_modules()
+
+
+parser = argparse.ArgumentParser()
+subparsers = parser.add_subparsers(dest='module')
+for module in modules:
+    tmp_parser = subparsers.add_parser(module)
+    for arg in get_run_callback(path.dirname( modules[module] ),module)()[2]:
+        tmp_parser.add_argument('-'+arg.name).completer = FilesCompleter
+
+argcomplete.autocomplete(parser)
+args = parser.parse_known_args()
+
+log.setLoggerLevel( 'debug' )
+
+log.info( "Loading module from `%s`" % modules[args['module']] )
+
+run = get_run_callback( path.dirname( modules[args['module']] ), args['module'] )
+
+from cli import DoneCli 
+DoneCli( args['module'], run, argv[1:] )
+
