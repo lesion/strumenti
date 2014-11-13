@@ -1,5 +1,5 @@
 
-from strumenti.lib import log
+from strumenti.libs import log
 
 def run( template_path, args, destination_path=None, file_match='st' ):
   """ 

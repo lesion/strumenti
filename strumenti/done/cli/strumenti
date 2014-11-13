@@ -3,10 +3,10 @@
 
 import argcomplete, argparse
 from argcomplete.completers import FilesCompleter
-from strumenti.lib import log
+from strumenti.libs import log
 from sys import argv
 from os import path
-from strumenti.done.lib.module import list_modules, get_run_callback
+from strumenti.done.libs.module import list_modules, get_run_callback
 modules = list_modules()
 
 

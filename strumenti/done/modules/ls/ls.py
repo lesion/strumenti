@@ -1,4 +1,4 @@
-from strumenti.done.lib.module import list_modules, Field, finish, fill_values
+from strumenti.done.libs.module import list_modules, Field, finish, fill_values
 
 class LsModule( ):
     ## values

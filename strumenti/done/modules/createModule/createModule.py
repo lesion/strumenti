@@ -1,4 +1,4 @@
-from strumenti.done.lib.module import Field, fill_values, module_paths
+from strumenti.done.libs.module import Field, fill_values, module_paths
 
 class CreateModuleModule( ):
 
@@ -66,7 +66,7 @@ class CreateModuleModule( ):
     args = { 'module_name': self.module_name, 'pages': self.pages } 
 
     ## create body of module from template and page
-    from strumenti.lib import template
+    from strumenti.libs import template
     from os.path import join, dirname
 
     module_path = join( module_paths[1] , values['module_name'] )

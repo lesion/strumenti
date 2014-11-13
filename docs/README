@@ -1,0 +1,45 @@
+== Code Convention ==
+
+ - Why -
+
+  . 80% of the lifetime cost of a piece of software goes to maintenance.
+
+  . Hardly any software is maintained for its whole life by the original
+    author.
+
+  . Code conventions improve the readability of the software, allowing
+    engineers to understand new code more quickly and thoroughly.
+
+  . If you ship your source code as a product, you need to make sure it
+    is as well packaged and clean as any other product you create. 
+
+
+
+
+== Source organization ==
+
+  . README me
+  . lib/ contain a toolbox with high level modules
+
+
+
+== File ==
+
+  . Tabs must be avoided as indentation char, spaces should be used
+    instead, because the semantics of tabs are not very well-defined
+    in the computer world, and they can be displayed completely 
+    differently on different types of systems and editors. 
+    Also, tabs often get destroyed or wrongly converted during 
+    copy&paste operations.
+
+  . Indentation is 2 spaces
+
+  . Avoid line longer than 80 chars
+
+  
+  . Files longer than 500 lines of code should be avoided
+    You don't need all that functionality in a single file,
+    split and modularize.
+
+
+

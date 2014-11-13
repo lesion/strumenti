@@ -1,5 +1,5 @@
-from strumenti.done.lib.types import *
-from strumenti.done.lib.module import fill_values, Field
+from strumenti.done.libs.types import *
+from strumenti.done.libs.module import fill_values, Field
 
 
 class WorkModule():
@@ -44,8 +44,8 @@ class WorkModule():
     from os.path import dirname, join
 
     #modify email template
-    from strumenti.lib import template
-    from strumenti.lib import log
+    from strumenti.libs import template
+    from strumenti.libs import log
     from os.path import join, dirname
 
     luogo_intervento = { 'Marsigli' : 'il dormitorio in Via Marsigli 12',
@@ -110,7 +110,7 @@ class WorkModule():
 
 
     #modify open office report
-    from strumenti.lib import oo
+    from strumenti.libs import oo
     from datetime import datetime
 
     luogo_intervento = { 'Marsigli' : 'Via Marsigli 12',
@@ -132,7 +132,7 @@ class WorkModule():
     oo.fill_doc_fields( join( template_path, 'diciannove.odt' ),  values, values['salva_report'] )
 
     #send email
-    from strumenti.lib.mail import send_mail
+    from strumenti.libs.mail import send_mail
     ret = send_mail( values['da'],[ values['da'], values['a'] ], values['oggetto'], values['mail'], [values['salva_report']] )
 
     #add report in dotproject

@@ -1,5 +1,5 @@
-from strumenti.done.lib.types import *
-from strumenti.done.lib.module import fill_values, Field
+from strumenti.done.libs.types import *
+from strumenti.done.libs.module import fill_values, Field
 
 
 class CreateScraperModule():
@@ -17,7 +17,7 @@ class CreateScraperModule():
 
   @fill_values
   def choose_fields( self, values ):
-    from strumenti.lib import scrape
+    from strumenti.libs import scrape
     form = scrape.get_form( values['Website'] )
 
     fields = []

@@ -1,5 +1,5 @@
-from strumenti.lib import template
-from strumenti.done.lib.module import Field, fill_values
+from strumenti.libs import template
+from strumenti.done.libs.module import Field, fill_values
 
 #args = { 'user': True, 
 #         'db': True, 
