@@ -4,22 +4,32 @@ import readline
 
 class DoneCli():
 
-    def __init__( self, module_name, run, args ):
+    def __init__( self, module_name, run, key_args, pos_args ):
 
         readline.parse_and_bind("tab: complete")
         readline.set_completer(self.complete)
         readline.set_completer_delims(' \t\n;')
-        key_args = {}
-        pos_args = []
+        #key_args = {}
+        #pos_args = []
+        print pos_args
+
+        print "KEY"
+        print key_args
+
 
         # split positional arguments from key/value args
-        for arg in args:
-            if '=' in arg:
-                arg_name, arg_value = arg.split( '=' )
-                key_args[ arg_name ] = arg_value
-            else:
-                pos_args.append(arg)
+        if len(pos_args):
+            for arg in key_args:
+                print arg
+                if key_args[arg] is None:
+                    key_args[arg]=pos_args.pop()
+                #if '=' in arg:
+                    #arg_name, arg_value = arg.split( '=' )
+                    #key_args[ arg_name ] = arg_value
+                #else:
+                    #pos_args.append(arg)
 
+        print key_args
         self.key_args = key_args
         self.pos_args = pos_args
 
@@ -60,21 +70,22 @@ class DoneCli():
                 # check if field.name is included in arguments
                 if arg.name in self.key_args.keys():
                     print "Setting %s to %s" % (arg.name,self.key_args[arg.name])
-                    args[arg.name] = self.key_args[arg.name]
+                    arg.value = self.key_args[arg.name]
                 elif len(self.pos_args):
-                    args[arg.name] = self.pos_args.pop()
+                    arg.value = self.pos_args.pop()
                 elif arg.mandatory:
                     value = raw_input(" %s [%s]: " %(arg.name,arg.default ))
                     if not value: value=arg.default
-                    args[arg.name]=value
+                    arg.value=value
                 else:
-                    args[arg.name]=arg.default
+                    arg.value=arg.default
 
+                print arg
                 if arg.validate:
-                    while not arg.validate(args[arg.name]):
+                    while not arg.validate():
                         value = raw_input(" %s [%s]: " %(arg.name,arg.default ))
                         if not value: value=arg.default
-                        args[arg.name]=value
+                        arg.value=value
 
 
         return args

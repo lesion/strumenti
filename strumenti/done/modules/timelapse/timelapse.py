@@ -1,8 +1,5 @@
 from strumenti.done.libs.module import Field, fill_values
-
-BLUE = "\x1b[1;32m"
-RED = "\x1b[1;36m"
-WHITE = "\x1b[1;0m"
+from strumenti.libs.field_types import *
 
 class TimelapseModule( ):
     ## values
@@ -10,20 +7,27 @@ class TimelapseModule( ):
     n_imgs = 0
 
 
-    @staticmethod
-    def args():
-        return {'sourceDir':'.','fps':20}
-
-    def info(msg):
-        return "\t" + BLUE + msg + WHITE
-
-    def warning(msg):
-        return "\t" + RED + msg + WHITE
-
     def run( self, values=None ):
-        fields = [Field('FPS',default=25),
-                  Field('sourceDir',default='.',validate=self.validate_sourceDir),
-                  Field('output',default='timelapse.mp4')]
+        fields = [
+
+            IntField('FPS',{
+                'default':25,
+                'min':0,
+                'max':100,
+                'mandatory': True,
+            }),
+
+            DirField('sourceDir',{
+                'default':'.',
+                'mandatory': True,
+            }),
+
+            FileField('output',{
+                'default': 'timelapse.mp4',
+                'mandatory': True,
+            }),
+
+        ]
         return ("Encode", self.encode, fields)
 
     def validate_sourceDir(self,val):
@@ -37,7 +41,6 @@ class TimelapseModule( ):
                 found+=1
         print found
         return found
-
 
 
     @fill_values
