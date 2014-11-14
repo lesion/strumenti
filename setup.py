@@ -22,7 +22,12 @@ setup(
     version = "1.0",
     cmdclass = { 'build_deb': build_deb },
     packages = find_packages( ),
+    install_requires = ['Mako'],
+    author='lesion',
+    author_mail='lesion@autistici.org',
+    description='a modular shell tool to automate tasks',
+    url='http://github.com/lesion/strumenti',
     entry_points = { 'console_scripts': [
-      'strumenti = strumenti.done.gui.done:main' ] }
+      'strumenti = strumenti.done.cli.done:main' ] }
 
 )

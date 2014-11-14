@@ -1,22 +1,24 @@
-
+from argcomplete.completers import FilesCompleter
 
 class Field(object):
     """generic representation of strumenti's field"""
-    def __init__(self, name, args):
+    def __init__(self, args):
         super(Field, self).__init__()
-        self.name = name
         self.args = args
 
         self.default = None
-        if 'default' in args: self.default = args['default'] # set default value if needed
+        if 'default' in args.keys(): self.default = args['default'] # set default value if needed
 
         self.value = None
+
+    def __str__(self):
+        return str(self.value)
 
 
 class IntField(Field):
     """Integer field"""
-    def __init__(self, name, args):
-        super(IntField, self).__init__( name, args )
+    def __init__(self, args):
+        super(IntField, self).__init__( args )
 
 
     def validate(self):
@@ -30,29 +32,29 @@ class IntField(Field):
 
 
 class DirField(Field):
-    def __init__(self,name,args):
-        super(DirField, self).__init__( name, args )
+    def __init__(self,args):
+        super(DirField, self).__init__( args )
+        self.completer = FilesCompleter
+        self.validate_fn = None
+        if 'validate_fn' in args.keys():
+            self.validate_fn = args['validate_fn']
 
     def validate(self):
         """docstring for validate"""
-        print "Inside validate of DirField %s" % self.value       
+        from os.path import isdir
+        valid = isdir(self.value)
+        if valid and self.validate_fn != None:
+            valid = self.validate_fn()
+        return valid
 
-    def completer(self,text,state):
-        """DirField for completer"""
-        print "Inside DirField completer %s" % text
 
 
 class FileField(Field):
-    def __init__(self,name,args):
-        super(FileField, self).__init__( name, args )
+    def __init__(self,args):
+        from rlcompleter import Completer
+        super(FileField, self).__init__( args )
+        self.completer = Completer
 
     def validate(self):
         """docstring for validate"""
         return True
-
-    def completer(self,text,state):
-        """DirField for completer"""
-        print "Inside DirField completer %s" % text
-
-
-

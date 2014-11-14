@@ -5,7 +5,7 @@ class LsModule( ):
     values = {}
 
     def run( self, values=None ):
-        fields = [Field('match') ]
+        fields = { 'match': Field({}) }
         return ("List and search modules", self.ls, fields)
 
     @fill_values
