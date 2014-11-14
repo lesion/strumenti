@@ -6,13 +6,24 @@ class Field(object):
         super(Field, self).__init__()
         self.args = args
 
+        self.completer = None
+        if 'completer' in args.keys():
+            self.completer = args['completer']
+
         self.default = None
         if 'default' in args.keys(): self.default = args['default'] # set default value if needed
+
+        self.mandatory = False
+        if 'mandatory' in args.keys():
+            self.mandatory = args['mandatory']
 
         self.value = None
 
     def __str__(self):
         return str(self.value)
+
+    def validate(self):
+        pass
 
 
 class IntField(Field):
@@ -23,7 +34,6 @@ class IntField(Field):
 
     def validate(self):
         """integer validation"""
-        print "Dentro validate di IntField del valure di %s = %s" % (self.value, type(self.value))
         try:
             self.value= int(self.value)
         except Exception:
@@ -34,7 +44,9 @@ class IntField(Field):
 class DirField(Field):
     def __init__(self,args):
         super(DirField, self).__init__( args )
-        self.completer = FilesCompleter
+        if not self.completer:
+            self.completer = FilesCompleter
+
         self.validate_fn = None
         if 'validate_fn' in args.keys():
             self.validate_fn = args['validate_fn']
@@ -51,9 +63,11 @@ class DirField(Field):
 
 class FileField(Field):
     def __init__(self,args):
-        from rlcompleter import Completer
         super(FileField, self).__init__( args )
-        self.completer = Completer
+        if not self.completer:
+            from rlcompleter import Completer
+            self.completer = Completer
+
 
     def validate(self):
         """docstring for validate"""

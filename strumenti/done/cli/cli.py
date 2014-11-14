@@ -43,8 +43,7 @@ class DoneCli():
                     pass
 
                 # check if field.name is included in arguments
-                if name in self.key_args.keys():
-                    print "Setting %s to %s" % (name,self.key_args[name])
+                if self.key_args[name]!=None:
                     arg.value = self.key_args[name]
                 elif len(self.pos_args):
                     arg.value = self.pos_args.pop()
@@ -54,6 +53,7 @@ class DoneCli():
                     arg.value=value
                 else:
                     arg.value=arg.default
+
 
                 if arg.validate and not arg.value:
                     valid = False
