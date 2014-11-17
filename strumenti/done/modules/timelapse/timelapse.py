@@ -31,7 +31,7 @@ class TimelapseModule( ):
             }),
 
             'size': Field({
-                'default':'1280x720',
+                'default':'scale=1920:1080',
                 'completer': self.size_completer,
                 'mandatory': True
             })
@@ -41,10 +41,21 @@ class TimelapseModule( ):
 
     def size_completer(self,text,state):
         from os import listdir
+        from os.path import splitext
         from strumenti.libs.image import get_image_size
 
         # get size of first image in source directory
-        (orig_w,orig_h) = get_image_size(listdir(self.fields['sourceDir'].value)[0])
+        # try to search the first file 
+        first_img = None
+        allowed_ext = ['.jpg','.jpeg','.png']
+        for img in listdir(self.fields['sourceDir'].value):
+            if splitext(img)[1].lower() in allowed_ext:
+                first_img = img
+                break
+
+        if first_img is None: return None
+
+        (orig_w,orig_h) = get_image_size(first_img)
         self.orig_w = orig_w
         self.orig_h = orig_h
 
@@ -82,8 +93,8 @@ class TimelapseModule( ):
         allowed_ext = ['.jpg','.jpeg','.png']
         found = False
         for img in listdir(self.fields['sourceDir'].value):
-            self.ext = splitext(img)[1]
             if splitext(img)[1].lower() in allowed_ext:
+                self.ext = splitext(img)[1]
                 found+=1
         return found
 
@@ -93,7 +104,8 @@ class TimelapseModule( ):
         options += " -ovc x264 -nosound -noskip -of rawvideo "
         options += " -mf fps=%s"% self.fields['FPS'].value
         options += " -o %s " % self.fields['output'].value
-        options += " -aspect %s " % (float(self.orig_w)/float(self.orig_h))
+        if hasattr(self,'orig_w'):
+            options += " -aspect %s " % (float(self.orig_w)/float(self.orig_h))
         options += " -x264encopts pass=1:bitrate=5000:crf=20:preset=veryslow" 
         options += " -vf %s " % self.fields['size'].value
 
